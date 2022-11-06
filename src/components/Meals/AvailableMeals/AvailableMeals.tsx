@@ -33,9 +33,10 @@ const DUMMY_MEALS = [
 interface AvailableMealsProps {}
 
 const AvailableMeals: FC<AvailableMealsProps> = () => {
-    const mealsList = DUMMY_MEALS.map((meal) => (
-        <MealItem key={meal.id} mealItem={meal} />
-    ));
+    const mealsList = DUMMY_MEALS.map((meal) => {
+        const { id, ...mealsWithoutId } = meal;
+        return <MealItem key={meal.id} mealItem={mealsWithoutId} />;
+    });
 
     return (
         <>

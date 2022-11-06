@@ -1,6 +1,7 @@
 import React, { FC, Key } from "react";
 import Card from "../../../UI/Card/Card";
 import styles from "./MealItem.module.css";
+import MealItemForm from "./MealItemForm/MealItemForm";
 
 interface MealItemProps {
     key: Key | undefined | null;
@@ -16,7 +17,9 @@ const MealItem: FC<MealItemProps> = ({ mealItem }) => {
                 <div className={styles.description}>{description}</div>
                 <div className={styles.price}>${price.toFixed(2)}</div>
             </div>
-            <div></div>
+            <div>
+                <MealItemForm />
+            </div>
         </li>
     );
 };
