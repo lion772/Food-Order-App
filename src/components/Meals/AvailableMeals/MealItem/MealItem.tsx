@@ -5,7 +5,7 @@ import MealItemForm from "./MealItemForm/MealItemForm";
 
 interface MealItemProps {
     key: Key | undefined | null;
-    mealItem: { name: string; description: string; price: number };
+    mealItem: { id: string; name: string; description: string; price: number };
 }
 
 const MealItem: FC<MealItemProps> = ({ mealItem }) => {
@@ -18,7 +18,7 @@ const MealItem: FC<MealItemProps> = ({ mealItem }) => {
                 <div className={styles.price}>${price.toFixed(2)}</div>
             </div>
             <div>
-                <MealItemForm />
+                <MealItemForm id={mealItem.id} />
             </div>
         </li>
     );
