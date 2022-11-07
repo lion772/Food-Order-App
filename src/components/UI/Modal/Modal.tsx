@@ -1,13 +1,14 @@
-import React, { FC, Fragment, ReactNode } from "react";
+import React, { FC, Fragment, MouseEventHandler, ReactNode } from "react";
 import styles from "./Modal.module.css";
 import ReactDOM from "react-dom";
 
 interface ModalProps {
     children: ReactNode;
+    onClose: MouseEventHandler | undefined;
 }
 
-const Backdrop = () => {
-    return <div className={styles.backdrop}></div>;
+const Backdrop: FC<ModalProps> = ({ onClose }) => {
+    return <div className={styles.backdrop} onClick={onClose}></div>;
 };
 
 const ModalOverlay: FC<ModalProps> = ({ children }) => {
@@ -19,12 +20,15 @@ const ModalOverlay: FC<ModalProps> = ({ children }) => {
 };
 
 const portalElement = document.querySelector("#overlays") as Element;
-const Modal: FC<ModalProps> = ({ children }) => {
+const Modal: FC<ModalProps> = ({ onClose, children }) => {
     return (
         <Fragment>
-            {ReactDOM.createPortal(<Backdrop />, portalElement)}
             {ReactDOM.createPortal(
-                <ModalOverlay>{children}</ModalOverlay>,
+                <Backdrop onClose={onClose} children={undefined} />,
+                portalElement
+            )}
+            {ReactDOM.createPortal(
+                <ModalOverlay onClose={undefined}>{children}</ModalOverlay>,
                 portalElement
             )}
         </Fragment>

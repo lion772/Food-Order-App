@@ -4,6 +4,6 @@ import Modal from "./Modal";
 
 it("It should mount", () => {
     const div = document.createElement("div");
-    ReactDOM.render(<Modal children={undefined} />, div);
+    ReactDOM.render(<Modal children={undefined} onClose={undefined} />, div);
     ReactDOM.unmountComponentAtNode(div);
 });
