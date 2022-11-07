@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler } from "react";
+import React, { FC, MouseEventHandler, useContext } from "react";
 import Modal from "../UI/Modal/Modal";
 import styles from "./Cart.module.css";
 
