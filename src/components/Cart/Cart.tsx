@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import Modal from "../UI/Modal/Modal";
 import styles from "./Cart.module.css";
 
 interface CartProps {}
@@ -14,7 +15,7 @@ const Cart: FC<CartProps> = () => {
         </ul>
     );
     return (
-        <>
+        <Modal>
             {cartitems}
             <div className={styles.total}>
                 <span>Total Amount</span>
@@ -24,7 +25,7 @@ const Cart: FC<CartProps> = () => {
                 <button className={styles["button--alt"]}>Close</button>
                 <button className={styles.button}>Order</button>
             </div>
-        </>
+        </Modal>
     );
 };
 
