@@ -18,15 +18,13 @@ function App() {
     };
 
     return (
-        <ErrorBoundary>
-            <CartProvider>
-                {isCartOpen && <Cart onHideCart={hideCartHandler} />}
-                <Header onShowCart={showCartHandler} />
-                <main>
-                    <Meals />
-                </main>
-            </CartProvider>
-        </ErrorBoundary>
+        <CartProvider>
+            {isCartOpen && <Cart onHideCart={hideCartHandler} />}
+            <Header onShowCart={showCartHandler} />
+            <main>
+                <Meals />
+            </main>
+        </CartProvider>
     );
 }
 
