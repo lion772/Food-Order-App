@@ -1,4 +1,5 @@
-import React, { FC, Key } from "react";
+import React, { FC, Key, useContext } from "react";
+import { CartContext } from "../../../../store/Cart-Context/CartContext";
 import Card from "../../../UI/Card/Card";
 import styles from "./MealItem.module.css";
 import MealItemForm from "./MealItemForm/MealItemForm";
@@ -10,6 +11,18 @@ interface MealItemProps {
 
 const MealItem: FC<MealItemProps> = ({ mealItem }) => {
     const { name, description, price } = mealItem;
+    const appCtx = useContext(CartContext);
+
+    const addItemToCartHandler = (amount: number) => {
+        console.log(amount);
+        appCtx.addItem({
+            id: mealItem.id,
+            name: mealItem.name,
+            description: mealItem.description,
+            price: mealItem.price,
+            amount: amount,
+        });
+    };
     return (
         <li className={styles.meal}>
             <div>
@@ -18,7 +31,10 @@ const MealItem: FC<MealItemProps> = ({ mealItem }) => {
                 <div className={styles.price}>${price.toFixed(2)}</div>
             </div>
             <div>
-                <MealItemForm id={mealItem.id} />
+                <MealItemForm
+                    id={mealItem.id}
+                    onAddToCart={addItemToCartHandler}
+                />
             </div>
         </li>
     );

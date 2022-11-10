@@ -1,17 +1,10 @@
-import React, {
-    FC,
-    FormEvent,
-    FormEventHandler,
-    HTMLInputTypeAttribute,
-    RefObject,
-    useContext,
-} from "react";
-import { CartContext } from "../../../../../store/Cart-Context/CartContext";
+import React, { FC, FormEvent, useState } from "react";
 import Input from "../../../../UI/Input/Input";
 import styles from "./MealItemForm.module.css";
 
 interface MealItemFormProps {
     id: string;
+    onAddToCart: (amount: number) => void;
 }
 
 type InputProps = {
@@ -25,22 +18,34 @@ type InputProps = {
     };
 };
 
-const MealItemForm: FC<MealItemFormProps> = ({ id }) => {
-    const appCtx = useContext(CartContext);
-    const ref = React.useRef<any>();
+const MealItemForm: FC<MealItemFormProps> = (props) => {
+    const [amountIsValid, setAmountIsValid] = useState<boolean>(true);
+    const amountInputRef = React.useRef<any>();
 
     const getNewMeal = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(ref.current.value);
+        const enteredAmount = amountInputRef.current.value;
+        const enteredAmountNumber = +amountInputRef.current.value;
+
+        if (
+            enteredAmount.trim().length === 0 ||
+            enteredAmountNumber < 1 ||
+            enteredAmountNumber > 5
+        ) {
+            console.log(enteredAmountNumber >= 1);
+            setAmountIsValid(false);
+            return;
+        }
+        props.onAddToCart(enteredAmountNumber);
         //appCtx.addItem();
     };
 
     return (
         <form className={styles.form} onSubmit={getNewMeal}>
             <Input
-                ref={ref}
+                ref={amountInputRef}
                 input={{
-                    id: `amount_${id}`,
+                    id: `amount_${props.id}`,
                     type: "number",
                     min: "1",
                     max: "5",
@@ -49,6 +54,9 @@ const MealItemForm: FC<MealItemFormProps> = ({ id }) => {
                 }}
             />
             <button>+ Add</button>
+            {!amountIsValid && (
+                <p>Input is not valid. Please enter a valid amount (1-5)</p>
+            )}
         </form>
     );
 };
