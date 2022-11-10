@@ -1,7 +1,8 @@
-import React, { FC, Key } from "react";
+import React, { FC, forwardRef } from "react";
 import styles from "./Input.module.css";
 
 interface InputProps {
+    ref: any;
     input: {
         id: string;
         type: string;
@@ -12,13 +13,13 @@ interface InputProps {
     };
 }
 
-const Input: FC<InputProps> = ({ input }) => {
+const Input: FC<InputProps> = forwardRef(({ input }, ref: any) => {
     return (
         <div className={styles.input}>
             <label htmlFor={input.id}>Amount</label>
-            <input {...input} />
+            <input ref={ref} {...input} />
         </div>
     );
-};
+});
 
 export default Input;

@@ -15,6 +15,7 @@ it("It should mount", () => {
                 step: "1",
                 defaultValue: "1",
             }}
+            ref={undefined}
         />,
         div
     );

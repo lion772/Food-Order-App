@@ -14,11 +14,11 @@ enum CartActionKind {
 }
 
 // An interface for our actions
-interface CartAction {
+/* interface CartAction {
     type: CartActionKind | string;
     item: any;
     id: string;
-}
+} */
 
 // An interface for our state
 interface CartState {
