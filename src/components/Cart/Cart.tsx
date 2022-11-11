@@ -14,19 +14,14 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
         <ul className={styles["cart-items"]}>
             {cartContext.items.map((cartitem) => {
                 return (
-                    <li>
-                        <CartItem
-                            key={cartitem["id"]}
-                            name={cartitem["name"]}
-                            amount={cartitem["amount"]}
-                            price={cartitem["price"]}
-                            onAdd={onAddHandler.bind(null, cartitem)}
-                            onRemove={onRemoveHandler.bind(
-                                null,
-                                cartitem["id"]
-                            )}
-                        />
-                    </li>
+                    <CartItem
+                        key={cartitem["id"]}
+                        name={cartitem["name"]}
+                        amount={cartitem["amount"]}
+                        price={cartitem["price"]}
+                        onAdd={onAddHandler.bind(null, cartitem)}
+                        onRemove={onRemoveHandler.bind(null, cartitem["id"])}
+                    />
                 );
             })}
         </ul>

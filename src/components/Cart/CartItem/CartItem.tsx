@@ -1,8 +1,8 @@
-import React, { FC, Key, MouseEventHandler } from "react";
+import React, { FC, Key } from "react";
 import styles from "./CartItem.module.css";
 
 interface CartItemProps {
-    key: Key | string | undefined | null;
+    key: Key | undefined | null;
     name: string;
     amount: number;
     price: number;
@@ -12,12 +12,6 @@ interface CartItemProps {
 
 const CartItem: FC<CartItemProps> = (props) => {
     const price = `$${props.price.toFixed(2)}`;
-
-    const actualItem = {
-        name: props.name,
-        price: props.price,
-        amount: props.amount,
-    };
 
     return (
         <li className={styles["cart-item"]}>
