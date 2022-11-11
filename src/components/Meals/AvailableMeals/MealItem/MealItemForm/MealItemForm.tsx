@@ -7,17 +7,6 @@ interface MealItemFormProps {
     onAddToCart: (amount: number) => void;
 }
 
-type InputProps = {
-    input: {
-        id: string;
-        type: string;
-        min: string;
-        max: string;
-        step: string;
-        defaultValue: string;
-    };
-};
-
 const MealItemForm: FC<MealItemFormProps> = (props) => {
     const [amountIsValid, setAmountIsValid] = useState<boolean>(true);
     const amountInputRef = React.useRef<any>();
@@ -37,7 +26,6 @@ const MealItemForm: FC<MealItemFormProps> = (props) => {
             return;
         }
         props.onAddToCart(enteredAmountNumber);
-        //appCtx.addItem();
     };
 
     return (

@@ -17,11 +17,16 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
                 return (
                     <li>
                         <CartItem
-                            item={cartitem}
-                            onAdd={onAddHandler}
-                            onRemove={onRemoveHandler}
+                            key={cartitem["id"]}
+                            name={cartitem["name"]}
+                            amount={cartitem["amount"]}
+                            price={cartitem["price"]}
+                            onAdd={onAddHandler.bind(null, cartitem)}
+                            onRemove={onRemoveHandler.bind(
+                                null,
+                                cartitem["id"]
+                            )}
                         />
-                        {cartitem["amount"]}x {cartitem["name"]}
                     </li>
                 );
             })}
@@ -30,12 +35,11 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
     const carItemTotalAmount = cartContext.totalAmount.toFixed(2);
     const hasItems = cartContext.items.length > 0;
 
-    function onAddHandler() {
-        console.log(amount);
-        setAmount(amount + 1);
+    function onAddHandler(actualItem: any) {
+        console.log(actualItem);
     }
-    function onRemoveHandler() {
-        console.log("onRemove");
+    function onRemoveHandler(id: string) {
+        console.log("onRemove", id);
     }
     return (
         <Modal onClose={onHideCart}>
@@ -55,3 +59,5 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
 };
 
 export default Cart;
+
+/* Bind pre-configure a function and its argument, which'll be received upon a future execution */

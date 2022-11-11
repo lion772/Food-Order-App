@@ -44,20 +44,35 @@ const cartReducer = (state: CartState, action: any) => {
     switch (type) {
         case CartActionKind.ADD:
             //Concat returns a new array, unlike push which edits it, so we don't edit existing states or snapshots
-            let updatedItems = state.items.concat(action.item);
             const updatedTotalAmount =
                 state.totalAmount + item.price * item.amount;
-            //Return a new state
+
+            const existingCartItemIndex = state.items.findIndex(
+                (item: any) => item.id === action.item.id
+            );
+            const existingCartItem = state.items[existingCartItemIndex];
+            let updatedItems;
+
+            /* Updating state.items whether or not some CartItem exists */
+            if (existingCartItem) {
+                const updatedItem = {
+                    ...existingCartItem,
+                    amount: existingCartItem.amount + action.item.amount,
+                };
+                updatedItems = [...state.items];
+                updatedItems[existingCartItemIndex] = updatedItem;
+            } else {
+                updatedItems = state.items.concat(action.item);
+            }
+
+            //Return a new state snapshot
             return {
                 items: updatedItems,
                 totalAmount: updatedTotalAmount,
             };
 
         case CartActionKind.REMOVE:
-            const updatedItemsDiscount = removeItem(
-                state.items,
-                action.item
-            );
+            const updatedItemsDiscount = removeItem(state.items, action.item);
             const updatedTotalAmountDiscount =
                 state.totalAmount - item.price * item.amount;
             //Return a new state
