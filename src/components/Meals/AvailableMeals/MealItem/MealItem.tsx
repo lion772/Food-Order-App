@@ -11,14 +11,12 @@ interface MealItemProps {
 
 const MealItem: FC<MealItemProps> = ({ mealItem }) => {
     const { name, description, price } = mealItem;
-    const appCtx = useContext(CartContext);
+    const cartCtx = useContext(CartContext);
 
     const addItemToCartHandler = (amount: number) => {
-        console.log(amount);
-        appCtx.addItem({
+        cartCtx.addItem({
             id: mealItem.id,
             name: mealItem.name,
-            description: mealItem.description,
             price: mealItem.price,
             amount: amount,
         });

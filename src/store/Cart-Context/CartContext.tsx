@@ -43,11 +43,11 @@ const cartReducer = (state: CartState, action: any) => {
 
     switch (type) {
         case CartActionKind.ADD:
-            /* Concat returns a new array, unlike push which edits it, so we don't edit existing states or snapshots */
+            //Concat returns a new array, unlike push which edits it, so we don't edit existing states or snapshots
             let updatedItems = state.items.concat(action.item);
             const updatedTotalAmount =
                 state.totalAmount + item.price * item.amount;
-            /* Return a new state */
+            //Return a new state
             return {
                 items: updatedItems,
                 totalAmount: updatedTotalAmount,
@@ -55,12 +55,12 @@ const cartReducer = (state: CartState, action: any) => {
 
         case CartActionKind.REMOVE:
             const updatedItemsDiscount = removeItem(
-                state.items.concat,
+                state.items,
                 action.item
             );
             const updatedTotalAmountDiscount =
                 state.totalAmount - item.price * item.amount;
-            /* Return a new state */
+            //Return a new state
             return {
                 items: updatedItemsDiscount,
                 totalAmount: updatedTotalAmountDiscount,
