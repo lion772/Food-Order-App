@@ -7,7 +7,7 @@ interface CartItemProps {
     amount: number;
     price: number;
     onAdd: () => void;
-    onRemove: (id: string) => void;
+    onRemove: () => void;
 }
 
 const CartItem: FC<CartItemProps> = (props) => {
@@ -29,16 +29,10 @@ const CartItem: FC<CartItemProps> = (props) => {
                 </div>
             </div>
             <div className={styles.actions}>
-                <button
-                    className={styles.onRemove}
-                    onClick={() => props.onRemove}
-                >
+                <button className={styles.onRemove} onClick={props.onRemove}>
                     −
                 </button>
-                <button
-                    className={styles.onAdd}
-                    onClick={props.onAdd}
-                >
+                <button className={styles.onAdd} onClick={props.onAdd}>
                     +
                 </button>
             </div>

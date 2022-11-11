@@ -9,7 +9,6 @@ interface CartProps {
 }
 
 const Cart: FC<CartProps> = ({ onHideCart }) => {
-    const [amount, setAmount] = useState<number>(0);
     const cartContext = useContext(CartContext);
     const cartitems = (
         <ul className={styles["cart-items"]}>
@@ -36,10 +35,10 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
     const hasItems = cartContext.items.length > 0;
 
     function onAddHandler(actualItem: any) {
-        console.log(actualItem);
+        cartContext.addItem({ ...actualItem, amount: 1 });
     }
     function onRemoveHandler(id: string) {
-        console.log("onRemove", id);
+        cartContext.removeItem(id);
     }
     return (
         <Modal onClose={onHideCart}>

@@ -40,45 +40,60 @@ const defaultCartState = {
 
 const cartReducer = (state: CartState, action: any) => {
     const { type, item } = action;
+    const { items, totalAmount } = state;
+    let updatedItems, updatedItem, index, existingItem;
 
     switch (type) {
         case CartActionKind.ADD:
-            //Concat returns a new array, unlike push which edits it, so we don't edit existing states or snapshots
-            const updatedTotalAmount =
-                state.totalAmount + item.price * item.amount;
+            let updatedTotalAmount = totalAmount + item.price * item.amount;
 
-            const existingCartItemIndex = state.items.findIndex(
-                (item: any) => item.id === action.item.id
-            );
-            const existingCartItem = state.items[existingCartItemIndex];
-            let updatedItems;
+            index = items.findIndex((itemEl: any) => itemEl.id === item.id);
+            existingItem = items[index];
 
-            /* Updating state.items whether or not some CartItem exists */
-            if (existingCartItem) {
-                const updatedItem = {
-                    ...existingCartItem,
-                    amount: existingCartItem.amount + action.item.amount,
+            if (existingItem) {
+                /* Update obj*/
+                updatedItem = {
+                    ...existingItem,
+                    amount: existingItem.amount + item.amount,
                 };
-                updatedItems = [...state.items];
-                updatedItems[existingCartItemIndex] = updatedItem;
+                updatedItems = [...items];
+                updatedItems[index] = updatedItem;
             } else {
-                updatedItems = state.items.concat(action.item);
+                /* Add obj */
+                updatedItems = items.concat(item);
             }
 
-            //Return a new state snapshot
             return {
                 items: updatedItems,
                 totalAmount: updatedTotalAmount,
             };
 
         case CartActionKind.REMOVE:
-            const updatedItemsDiscount = removeItem(state.items, action.item);
-            const updatedTotalAmountDiscount =
-                state.totalAmount - item.price * item.amount;
-            //Return a new state
+            console.log(state, action, action.id);
+
+            index = items.findIndex(
+                (itemEl: any) => itemEl.id === action.id
+            );
+            existingItem = items[index];
+
+            if (existingItem.amount === 1) {
+                /* Remove obj */
+                updatedItems = items.filter(
+                    (itemEl: any) => itemEl.id !== action.id
+                );
+            } else {
+                /* Discount one */
+                updatedItem = {
+                    ...existingItem,
+                    amount: existingItem.amount - 1,
+                };
+                updatedItems = [...items];
+                updatedItems[index] = updatedItem;
+            }
+
             return {
-                items: updatedItemsDiscount,
-                totalAmount: updatedTotalAmountDiscount,
+                items: updatedItems,
+                totalAmount: totalAmount - existingItem.price,
             };
 
         default:
