@@ -6,7 +6,9 @@ type RequestConfig = {
     headers?: HeadersInit | undefined;
     body?: any | null;
 };
+
 type ApplyData = (data: any) => void;
+
 interface IUseHtpp {
     isLoading: boolean;
     error: string | null;
@@ -15,10 +17,11 @@ interface IUseHtpp {
         applyData: ApplyData
     ) => Promise<void>;
 }
+
 const useHttp = (): IUseHtpp => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    
+
     const sendRequest = useCallback(
         async (requestConfig: RequestConfig, applyData: ApplyData) => {
             setIsLoading(true);

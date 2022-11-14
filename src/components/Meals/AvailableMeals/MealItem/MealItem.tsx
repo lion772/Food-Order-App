@@ -1,4 +1,4 @@
-import React, { FC, Key, useContext } from "react";
+import React, { FC, Key, useContext, useEffect, useState } from "react";
 import { CartContext } from "../../../../store/Cart-Context/CartContext";
 import Card from "../../../UI/Card/Card";
 import styles from "./MealItem.module.css";
@@ -6,18 +6,22 @@ import MealItemForm from "./MealItemForm/MealItemForm";
 
 interface MealItemProps {
     key: Key | undefined | null;
-    mealItem: { id: string; name: string; description: string; price: number };
+    mealItem: {
+        meal: { id: string; name: string; description: string; price: number };
+    };
 }
 
-const MealItem: FC<MealItemProps> = ({ mealItem }) => {
-    const { name, description, price } = mealItem;
+const MealItem: FC<MealItemProps> = ({ mealItem: { meal } }) => {
+    const { name, description, price } = meal;
     const cartCtx = useContext(CartContext);
+
+    console.log(meal);
 
     const addItemToCartHandler = (amount: number) => {
         cartCtx.addItem({
-            id: mealItem.id,
-            name: mealItem.name,
-            price: mealItem.price,
+            id: meal.id,
+            name: meal.name,
+            price: meal.price,
             amount: amount,
         });
     };
@@ -26,13 +30,10 @@ const MealItem: FC<MealItemProps> = ({ mealItem }) => {
             <div>
                 <h3>{name}</h3>
                 <div className={styles.description}>{description}</div>
-                <div className={styles.price}>${price.toFixed(2)}</div>
+                <div className={styles.price}>${price}</div>
             </div>
             <div>
-                <MealItemForm
-                    id={mealItem.id}
-                    onAddToCart={addItemToCartHandler}
-                />
+                <MealItemForm id={meal.id} onAddToCart={addItemToCartHandler} />
             </div>
         </li>
     );

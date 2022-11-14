@@ -1,7 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import MealItem from "./MealItem/MealItem";
 import Card from "../../UI/Card/Card";
 import styles from "./AvailableMeals.module.css";
+import useHttp from "../../../hooks/use-http/use-http";
 
 const DUMMY_MEALS = [
     {
@@ -30,10 +31,32 @@ const DUMMY_MEALS = [
     },
 ];
 
+const requestConfig = {
+    url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/meals.json",
+};
+
 interface AvailableMealsProps {}
 
 const AvailableMeals: FC<AvailableMealsProps> = () => {
-    const mealsList = DUMMY_MEALS.map((meal) => {
+    const [meals, setMeals] = useState<any>([]);
+    const { sendRequest: FetchMeals } = useHttp();
+
+    useEffect(() => {
+        FetchMeals(requestConfig, getDataMeals);
+    }, []);
+
+    function getDataMeals(meals: any) {
+        const loadedTasks = [];
+        for (const key in meals) {
+            loadedTasks.push({
+                id: key,
+                meal: meals[key],
+            });
+        }
+        setMeals(loadedTasks);
+    }
+
+    const mealsList = meals.map((meal: any) => {
         return <MealItem key={meal.id} mealItem={meal} />;
     });
 
