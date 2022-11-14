@@ -21,10 +21,16 @@ enum CartActionKind {
 } */
 
 // An interface for our state
-interface CartState {
+type CartState = {
     items: any;
     totalAmount: number;
-}
+};
+
+type CartAction = {
+    type: string;
+    item: any;
+    id: string;
+};
 
 export const CartContext = React.createContext({
     items: [],
@@ -38,8 +44,8 @@ const defaultCartState = {
     totalAmount: 0,
 };
 
-const cartReducer = (state: CartState, action: any) => {
-    const { type, item } = action;
+const cartReducer = (state: CartState, action: CartAction) => {
+    const { type, item, id } = action;
     const { items, totalAmount } = state;
     let updatedItems, updatedItem, index, existingItem;
 
@@ -71,9 +77,7 @@ const cartReducer = (state: CartState, action: any) => {
         case CartActionKind.REMOVE:
             console.log(state, action, action.id);
 
-            index = items.findIndex(
-                (itemEl: any) => itemEl.id === action.id
-            );
+            index = items.findIndex((itemEl: any) => itemEl.id === action.id);
             existingItem = items[index];
 
             if (existingItem.amount === 1) {
@@ -109,11 +113,21 @@ const CartProvider = (props: any) => {
 
     const addItemToCartHandler = (item: any) => {
         console.log(item);
-        dispatchCartAction({ type: "ADD", item: item });
+        dispatchCartAction({
+            type: "ADD",
+            item: item,
+            id: item.id,
+        });
     };
 
     const removeItemFromCartHandler = (id: any) => {
-        dispatchCartAction({ type: "REMOVE", id: id });
+        const item = cartState.items.filter((itemEl: any) => itemEl.id === id);
+        console.log(item);
+        dispatchCartAction({
+            type: "REMOVE",
+            item: item,
+            id: id,
+        });
     };
 
     const cartContext = {
