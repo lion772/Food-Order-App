@@ -5,7 +5,7 @@ import styles from "./AvailableMeals.module.css";
 import useHttp from "../../../hooks/use-http/use-http";
 
 const requestConfig = {
-    url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/meals",
+    url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/meals.json",
 };
 
 interface AvailableMealsProps {}
@@ -32,7 +32,6 @@ const AvailableMeals: FC<AvailableMealsProps> = () => {
     const mealsList = meals.map((meal: any) => {
         return <MealItem key={meal.id} mealItem={meal} />;
     });
-    console.log(error);
 
     return (
         <>

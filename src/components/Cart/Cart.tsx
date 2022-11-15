@@ -3,12 +3,14 @@ import { CartContext } from "../../store/Cart-Context/CartContext";
 import Modal from "../UI/Modal/Modal";
 import styles from "./Cart.module.css";
 import CartItem from "./CartItem/CartItem";
+import Checkout from "./Checkout/Checkout";
 
 interface CartProps {
     onHideCart: MouseEventHandler;
 }
 
 const Cart: FC<CartProps> = ({ onHideCart }) => {
+    const [isCheckout, setIsCheckout] = useState(false);
     const cartContext = useContext(CartContext);
     const cartitems = (
         <ul className={styles["cart-items"]}>
@@ -35,6 +37,10 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
     function onRemoveHandler(id: string) {
         cartContext.removeItem(id);
     }
+    function orderHandler() {
+        setIsCheckout(true);
+    }
+
     return (
         <Modal onClose={onHideCart}>
             {cartitems}
@@ -42,12 +48,26 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
                 <span>Total Amount</span>
                 <span>${carItemTotalAmount}</span>
             </div>
-            <div className={styles.actions}>
-                <button className={styles["button--alt"]} onClick={onHideCart}>
-                    Close
-                </button>
-                {hasItems && <button className={styles.button}>Order</button>}
-            </div>
+            {/* enter new modal here */}
+            {isCheckout && <Checkout onCancel={onHideCart} />}
+            {!isCheckout && (
+                <div className={styles.actions}>
+                    <button
+                        className={styles["button--alt"]}
+                        onClick={onHideCart}
+                    >
+                        Close
+                    </button>
+                    {hasItems && (
+                        <button
+                            className={styles.button}
+                            onClick={orderHandler}
+                        >
+                            Order
+                        </button>
+                    )}
+                </div>
+            )}
         </Modal>
     );
 };
