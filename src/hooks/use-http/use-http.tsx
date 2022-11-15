@@ -39,7 +39,6 @@ const useHttp = (): IUseHtpp => {
                 }
                 const data = await response.json();
                 applyData(data);
-                //setTasks(loadedTasks);
             } catch (err) {
                 setError((err as Error).message || "Something went wrong!");
             }

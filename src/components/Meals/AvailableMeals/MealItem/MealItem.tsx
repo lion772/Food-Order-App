@@ -1,4 +1,5 @@
 import React, { FC, Key, useContext, useEffect, useState } from "react";
+import useHttp from "../../../../hooks/use-http/use-http";
 import { CartContext } from "../../../../store/Cart-Context/CartContext";
 import Card from "../../../UI/Card/Card";
 import styles from "./MealItem.module.css";
@@ -11,11 +12,16 @@ interface MealItemProps {
     };
 }
 
+/* const requestConfig = {
+    url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/meals.json",
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: meal,
+}; */
+
 const MealItem: FC<MealItemProps> = ({ mealItem: { meal } }) => {
     const { name, description, price } = meal;
     const cartCtx = useContext(CartContext);
-
-    console.log(meal);
 
     const addItemToCartHandler = (amount: number) => {
         cartCtx.addItem({
