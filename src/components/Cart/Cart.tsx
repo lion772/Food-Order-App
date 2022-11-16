@@ -41,15 +41,13 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
         setIsCheckout(true);
     }
 
-    return (
+    const displayOrderList = (
         <Modal onClose={onHideCart}>
             {cartitems}
             <div className={styles.total}>
                 <span>Total Amount</span>
                 <span>${carItemTotalAmount}</span>
             </div>
-            {/* enter new modal here */}
-            {isCheckout && <Checkout onCancel={onHideCart} />}
             {!isCheckout && (
                 <div className={styles.actions}>
                     <button
@@ -69,6 +67,17 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
                 </div>
             )}
         </Modal>
+    );
+
+    return (
+        <>
+            {isCheckout && (
+                <Modal>
+                    <Checkout onCancel={onHideCart} />
+                </Modal>
+            )}
+            {!isCheckout && displayOrderList}
+        </>
     );
 };
 

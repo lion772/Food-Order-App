@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 
 interface ModalProps {
     children: ReactNode;
-    onClose: MouseEventHandler | undefined;
+    onClose?: MouseEventHandler | undefined;
 }
 
 const Backdrop: FC<ModalProps> = ({ onClose }) => {
