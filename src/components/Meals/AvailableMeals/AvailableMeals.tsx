@@ -30,8 +30,7 @@ const AvailableMeals: FC<AvailableMealsProps> = () => {
     }
 
     const mealsList = meals.map((meal: any) => {
-        const id = meal.id;
-        return <MealItem key={meal.id} mealItem={{ ...meal, id: "1" }} />;
+        return <MealItem key={meal.id} mealItem={meal} />;
     });
 
     return (

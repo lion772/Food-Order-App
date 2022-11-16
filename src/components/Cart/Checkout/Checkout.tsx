@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, useEffect, useState } from "react";
+import React, { FC, MouseEventHandler } from "react";
 import useHttp from "../../../hooks/use-http/use-http";
 import useInput from "../../../hooks/use-input/use-input";
 import styles from "./Checkout.module.css";
@@ -9,7 +9,6 @@ interface CheckoutProps {
 
 const Checkout: FC<CheckoutProps> = (props) => {
     const { isLoading, error, sendRequest: orderMeal } = useHttp();
-    const [meal, setOrderMeal] = useState<any>();
     const isNotEmpty = (value: string) => value.trim() !== "";
     const {
         value: name,
@@ -50,18 +49,6 @@ const Checkout: FC<CheckoutProps> = (props) => {
 
     let formIsValid = false;
 
-    useEffect(() => {
-        if (meal) {
-            const requestConfig = {
-                url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/order-meal.json",
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: meal,
-            };
-            orderMeal(requestConfig, processOrderMeal);
-        }
-    }, [ meal, orderMeal]);
-
     if (nameIsValid && streetIsValid && postalIsValid && cityIsValid) {
         formIsValid = true;
     }
@@ -75,7 +62,15 @@ const Checkout: FC<CheckoutProps> = (props) => {
         }
         console.log("Form has been successfully submitted!");
 
-        setOrderMeal({ name, street, postal, city });
+        //setOrderMeal({ name, street, postal, city });
+
+        const requestConfig = {
+            url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/order-meal.json",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: { name, street, postal, city },
+        };
+        orderMeal(requestConfig, processOrderMeal);
 
         resetName();
         resetStreet();
@@ -98,7 +93,7 @@ const Checkout: FC<CheckoutProps> = (props) => {
 
     return (
         <>
-            <form onSubmit={submitHandler}>
+            <form className={styles.form} onSubmit={submitHandler}>
                 <div>
                     <div className={nameFormControl}>
                         <label htmlFor="name">Your Name</label>
@@ -148,7 +143,16 @@ const Checkout: FC<CheckoutProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.actions}>
-                    <button>Confirm</button>
+                    <button
+                        disabled={
+                            !nameIsValid &&
+                            !streetIsValid &&
+                            !postalIsValid &&
+                            !cityIsValid
+                        }
+                    >
+                        Confirm
+                    </button>
                     <button type="button" onClick={props.onCancel}>
                         Cancel
                     </button>
