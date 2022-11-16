@@ -49,7 +49,7 @@ const useInput = (validateValue: IUseInput) => {
         });
     };
 
-    const inputBlurHandler = (event: FormEvent<HTMLInputElement>) => {
+    const inputBlurHandler = () => {
         dispatch({
             type: "TOUCH",
             enteredText: state.enteredText,

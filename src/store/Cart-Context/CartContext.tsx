@@ -3,6 +3,7 @@ import React, { useReducer } from "react";
 enum CartActionKind {
     ADD = "ADD",
     REMOVE = "REMOVE",
+    CLEAN = "CLEAN",
 }
 
 // An interface for our actions
@@ -28,6 +29,7 @@ export const CartContext = React.createContext({
     totalAmount: 0,
     addItem: (item: any) => {},
     removeItem: (id: string) => {},
+    removeAllItems: () => {},
 });
 
 const defaultCartState = {
@@ -91,6 +93,9 @@ const cartReducer = (state: CartState, action: any) => {
                 totalAmount: totalAmount - existingItem.price,
             };
 
+        case CartActionKind.CLEAN:
+            return defaultCartState;
+
         default:
             return defaultCartState;
     }
@@ -118,11 +123,16 @@ const CartProvider = (props: any) => {
         });
     };
 
+    const cleanState = () => {
+        dispatchCartAction({ type: "CLEAN" });
+    };
+
     const cartContext = {
         items: cartState.items,
         totalAmount: cartState.totalAmount,
         addItem: addItemToCartHandler,
         removeItem: removeItemFromCartHandler,
+        removeAllItems: cleanState,
     };
 
     return (

@@ -72,8 +72,11 @@ const Cart: FC<CartProps> = ({ onHideCart }) => {
     return (
         <>
             {isCheckout && (
-                <Modal>
-                    <Checkout onCancel={onHideCart} />
+                <Modal onClose={onHideCart}>
+                    <Checkout
+                        orderedItems={cartContext.items}
+                        onCancel={onHideCart}
+                    />
                 </Modal>
             )}
             {!isCheckout && displayOrderList}
