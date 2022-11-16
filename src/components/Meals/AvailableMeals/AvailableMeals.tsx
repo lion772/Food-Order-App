@@ -16,7 +16,7 @@ const AvailableMeals: FC<AvailableMealsProps> = () => {
 
     useEffect(() => {
         fetchMeals(requestConfig, getDataMeals);
-    }, []);
+    }, [fetchMeals]);
 
     function getDataMeals(meals: any) {
         const loadedMeals = [];

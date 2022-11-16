@@ -1,13 +1,5 @@
 import React, { useReducer } from "react";
 
-function removeItem<T>(arr: Array<T>, value: T): Array<T> {
-    const index = arr.indexOf(value);
-    if (index > -1) {
-        arr.splice(index, 1);
-    }
-    return arr;
-}
-
 enum CartActionKind {
     ADD = "ADD",
     REMOVE = "REMOVE",
@@ -26,11 +18,10 @@ type CartState = {
     totalAmount: number;
 };
 
-type CartAction = {
+/* type CartAction = {
     type: string;
     item: any;
-    id: string;
-};
+}; */
 
 export const CartContext = React.createContext({
     items: [],
@@ -44,8 +35,8 @@ const defaultCartState = {
     totalAmount: 0,
 };
 
-const cartReducer = (state: CartState, action: CartAction) => {
-    const { type, item, id } = action;
+const cartReducer = (state: CartState, action: any) => {
+    const { type, item } = action;
     const { items, totalAmount } = state;
     let updatedItems, updatedItem, index, existingItem;
 
@@ -68,6 +59,7 @@ const cartReducer = (state: CartState, action: CartAction) => {
                 /* Add obj */
                 updatedItems = items.concat(item);
             }
+            console.log(state);
 
             return {
                 items: updatedItems,
@@ -75,8 +67,7 @@ const cartReducer = (state: CartState, action: CartAction) => {
             };
 
         case CartActionKind.REMOVE:
-            console.log(state, action, action.id);
-
+            console.log(action.id);
             index = items.findIndex((itemEl: any) => itemEl.id === action.id);
             existingItem = items[index];
 
@@ -116,16 +107,13 @@ const CartProvider = (props: any) => {
         dispatchCartAction({
             type: "ADD",
             item: item,
-            id: item.id,
         });
     };
 
-    const removeItemFromCartHandler = (id: any) => {
-        const item = cartState.items.filter((itemEl: any) => itemEl.id === id);
-        console.log(item);
+    const removeItemFromCartHandler = (id: string) => {
+        console.log(id);
         dispatchCartAction({
             type: "REMOVE",
-            item: item,
             id: id,
         });
     };

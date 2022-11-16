@@ -1,27 +1,27 @@
-import React, { FC, Key, useContext, useEffect, useState } from "react";
-import useHttp from "../../../../hooks/use-http/use-http";
+import React, { FC, Key, useContext } from "react";
 import { CartContext } from "../../../../store/Cart-Context/CartContext";
-import Card from "../../../UI/Card/Card";
 import styles from "./MealItem.module.css";
 import MealItemForm from "./MealItemForm/MealItemForm";
 
 interface MealItemProps {
     key: Key | undefined | null;
     mealItem: {
+        id: string;
         meal: { id: string; name: string; description: string; price: number };
     };
 }
 
-const MealItem: FC<MealItemProps> = ({ mealItem: { meal } }) => {
-    const { name, description, price } = meal;
+const MealItem: FC<MealItemProps> = ({ mealItem }) => {
+    const { name, description, price } = mealItem.meal;
+    const { id } = mealItem;
     const cartCtx = useContext(CartContext);
 
     const addItemToCartHandler = (amount: number) => {
         cartCtx.addItem({
-            id: meal.id,
-            name: meal.name,
-            price: meal.price,
-            amount: amount,
+            id: mealItem.id,
+            name,
+            price,
+            amount,
         });
     };
     return (
@@ -32,7 +32,7 @@ const MealItem: FC<MealItemProps> = ({ mealItem: { meal } }) => {
                 <div className={styles.price}>${price}</div>
             </div>
             <div>
-                <MealItemForm id={meal.id} onAddToCart={addItemToCartHandler} />
+                <MealItemForm id={id} onAddToCart={addItemToCartHandler} />
             </div>
         </li>
     );
