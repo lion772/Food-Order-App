@@ -12,13 +12,6 @@ interface MealItemProps {
     };
 }
 
-/* const requestConfig = {
-    url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/meals.json",
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: meal,
-}; */
-
 const MealItem: FC<MealItemProps> = ({ mealItem: { meal } }) => {
     const { name, description, price } = meal;
     const cartCtx = useContext(CartContext);

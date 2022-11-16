@@ -3,7 +3,7 @@ import styles from "./Modal.module.css";
 import ReactDOM from "react-dom";
 
 interface ModalProps {
-    children: ReactNode;
+    children?: ReactNode | undefined;
     onClose?: MouseEventHandler | undefined;
 }
 
@@ -24,11 +24,11 @@ const Modal: FC<ModalProps> = ({ onClose, children }) => {
     return (
         <Fragment>
             {ReactDOM.createPortal(
-                <Backdrop onClose={onClose} children={undefined} />,
+                <Backdrop onClose={onClose} />,
                 portalElement
             )}
             {ReactDOM.createPortal(
-                <ModalOverlay onClose={undefined}>{children}</ModalOverlay>,
+                <ModalOverlay>{children}</ModalOverlay>,
                 portalElement
             )}
         </Fragment>

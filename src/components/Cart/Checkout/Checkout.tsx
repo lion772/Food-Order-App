@@ -1,4 +1,5 @@
-import React, { FC, MouseEventHandler } from "react";
+import React, { FC, MouseEventHandler, useEffect, useState } from "react";
+import useHttp from "../../../hooks/use-http/use-http";
 import useInput from "../../../hooks/use-input/use-input";
 import styles from "./Checkout.module.css";
 
@@ -7,6 +8,8 @@ interface CheckoutProps {
 }
 
 const Checkout: FC<CheckoutProps> = (props) => {
+    const { isLoading, error, sendRequest: orderMeal } = useHttp();
+    const [meal, setOrderMeal] = useState<any>();
     const isNotEmpty = (value: string) => value.trim() !== "";
     const {
         value: name,
@@ -41,7 +44,23 @@ const Checkout: FC<CheckoutProps> = (props) => {
         reset: resetCity,
     } = useInput(isNotEmpty);
 
+    function processOrderMeal(data: any) {
+        console.log(data);
+    }
+
     let formIsValid = false;
+
+    useEffect(() => {
+        if (meal) {
+            const requestConfig = {
+                url: "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/order-meal.json",
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: meal,
+            };
+            orderMeal(requestConfig, processOrderMeal);
+        }
+    }, [ meal, orderMeal]);
 
     if (nameIsValid && streetIsValid && postalIsValid && cityIsValid) {
         formIsValid = true;
@@ -55,6 +74,9 @@ const Checkout: FC<CheckoutProps> = (props) => {
             return;
         }
         console.log("Form has been successfully submitted!");
+
+        setOrderMeal({ name, street, postal, city });
+
         resetName();
         resetStreet();
         resetPostal();
@@ -75,60 +97,65 @@ const Checkout: FC<CheckoutProps> = (props) => {
         : `${styles.control}`;
 
     return (
-        <form onSubmit={submitHandler}>
-            <div>
-                <div className={nameFormControl}>
-                    <label htmlFor="name">Your Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={nameChangeHandler}
-                        onBlur={nameBlurHandler}
-                    />
-                    {nameHasError && <p>Please enter a valid name.</p>}
+        <>
+            <form onSubmit={submitHandler}>
+                <div>
+                    <div className={nameFormControl}>
+                        <label htmlFor="name">Your Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={nameChangeHandler}
+                            onBlur={nameBlurHandler}
+                        />
+                        {nameHasError && <p>Please enter a valid name.</p>}
+                    </div>
+                    <div className={streetFormControl}>
+                        <label htmlFor="street">Street</label>
+                        <input
+                            type="text"
+                            id="street"
+                            value={street}
+                            onChange={streetChangeHandler}
+                            onBlur={streetBlurHandler}
+                        />
+                        {streetHasError && <p>Please enter a valid street.</p>}
+                    </div>
+                    <div className={postalFormControl}>
+                        <label htmlFor="postal">Postal Code</label>
+                        <input
+                            type="text"
+                            id="postal"
+                            value={postal}
+                            onChange={postalChangeHandler}
+                            onBlur={postalBlurHandler}
+                        />
+                        {postalHasError && (
+                            <p>Please enter a valid postal code.</p>
+                        )}
+                    </div>
+                    <div className={cityFormControl}>
+                        <label htmlFor="city">City</label>
+                        <input
+                            type="text"
+                            id="city"
+                            value={city}
+                            onChange={cityChangeHandler}
+                            onBlur={cityBlurHandler}
+                        />
+                        {cityHasError && <p>Please enter a valid city.</p>}
+                    </div>
                 </div>
-                <div className={streetFormControl}>
-                    <label htmlFor="street">Street</label>
-                    <input
-                        type="text"
-                        id="street"
-                        value={street}
-                        onChange={streetChangeHandler}
-                        onBlur={streetBlurHandler}
-                    />
-                    {streetHasError && <p>Please enter a valid street.</p>}
+                <div className={styles.actions}>
+                    <button>Confirm</button>
+                    <button type="button" onClick={props.onCancel}>
+                        Cancel
+                    </button>
                 </div>
-                <div className={postalFormControl}>
-                    <label htmlFor="postal">Postal Code</label>
-                    <input
-                        type="text"
-                        id="postal"
-                        value={postal}
-                        onChange={postalChangeHandler}
-                        onBlur={postalBlurHandler}
-                    />
-                    {postalHasError && <p>Please enter a valid postal code.</p>}
-                </div>
-                <div className={cityFormControl}>
-                    <label htmlFor="city">City</label>
-                    <input
-                        type="text"
-                        id="city"
-                        value={city}
-                        onChange={cityChangeHandler}
-                        onBlur={cityBlurHandler}
-                    />
-                    {cityHasError && <p>Please enter a valid city.</p>}
-                </div>
-            </div>
-            <div className={styles.actions}>
-                <button>Confirm</button>
-                <button type="button" onClick={props.onCancel}>
-                    Cancel
-                </button>
-            </div>
-        </form>
+            </form>
+            {!isLoading && error && <p>{error}</p>}
+        </>
     );
 };
 

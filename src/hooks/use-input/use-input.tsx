@@ -1,4 +1,4 @@
-import { FC, FormEvent, useReducer, useState } from "react";
+import { FormEvent, useReducer } from "react";
 
 type IUseInput = (value: string) => boolean;
 
@@ -16,8 +16,6 @@ type Action = {
 // Our reducer function that uses a switch statement to handle our actions
 function inputReducer(state: State, action: Action) {
     const { type, enteredText, isTouched } = action;
-    console.log("state", state);
-    console.log("action", action);
     switch (type) {
         case "ADD":
             return {
